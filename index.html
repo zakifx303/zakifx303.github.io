@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Halaman sederhana untuk menguji hosting website statis.">
+  <title>Hosting Test | Demo Website</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1020;
+      --panel: rgba(20, 29, 52, .82);
+      --panel-border: rgba(255, 255, 255, .10);
+      --text: #edf2ff;
+      --muted: #aab5d0;
+      --accent: #7c9cff;
+      --accent-2: #50e3c2;
+      --input: #10182b;
+      --shadow: 0 18px 50px rgba(0, 0, 0, .22);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 15% 0%, rgba(91, 118, 255, .22), transparent 45%),
+        radial-gradient(ellipse at 100% 25%, rgba(40, 211, 179, .12), transparent 36%),
+        var(--bg);
+      line-height: 1.6;
+      transition: background .25s ease, color .25s ease;
+    }
+    body.light {
+      color-scheme: light;
+      --bg: #f2f5fc;
+      --panel: rgba(255, 255, 255, .90);
+      --panel-border: rgba(25, 40, 80, .12);
+      --text: #18213a;
+      --muted: #5e6a85;
+      --accent: #385fe8;
+      --accent-2: #087e69;
+      --input: #f6f8ff;
+      --shadow: 0 18px 50px rgba(31, 48, 90, .09);
+      background:
+        radial-gradient(ellipse at 15% 0%, rgba(91, 118, 255, .13), transparent 45%),
+        radial-gradient(ellipse at 100% 25%, rgba(40, 211, 179, .10), transparent 36%),
+        var(--bg);
+    }
+    .wrap { width: min(1040px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 40px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 34px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: .2px; }
+    .logo { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; color: #081326; background: linear-gradient(135deg, var(--accent), var(--accent-2)); font-size: 21px; }
+    .tag { border: 1px solid var(--panel-border); background: var(--panel); border-radius: 999px; padding: 7px 12px; color: var(--muted); font-size: 12px; }
+    .hero { padding: clamp(24px, 5vw, 46px); border: 1px solid var(--panel-border); border-radius: 26px; background: var(--panel); box-shadow: var(--shadow); backdrop-filter: blur(12px); }
+    .eyebrow { color: var(--accent-2); font-weight: 750; text-transform: uppercase; letter-spacing: 1.6px; font-size: 12px; }
+    h1 { margin: 8px 0 12px; max-width: 740px; font-size: clamp(32px, 6vw, 54px); line-height: 1.1; letter-spacing: -1.5px; }
+    .intro { max-width: 650px; color: var(--muted); margin: 0; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+    button, .button-link { border: 0; border-radius: 12px; padding: 11px 16px; font: inherit; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform .15s ease, opacity .15s ease; }
+    button:hover, .button-link:hover { transform: translateY(-1px); }
+    button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+    .primary { background: linear-gradient(135deg, var(--accent), #8b7cff); color: #fff; }
+    .secondary { background: transparent; border: 1px solid var(--panel-border); color: var(--text); }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
+    .card { min-width: 0; padding: 22px; border: 1px solid var(--panel-border); border-radius: 20px; background: var(--panel); box-shadow: var(--shadow); }
+    .card h2 { margin: 0 0 4px; font-size: 17px; }
+    .sub { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
+    .clock { font-size: clamp(27px, 4vw, 38px); font-weight: 800; letter-spacing: -1px; font-variant-numeric: tabular-nums; }
+    .date { color: var(--muted); font-size: 14px; }
+    .counter-row { display: flex; align-items: center; gap: 14px; margin: 10px 0 16px; }
+    .count { font-size: 42px; line-height: 1.1; font-weight: 800; min-width: 42px; }
+    .controls { display: flex; flex-wrap: wrap; gap: 8px; }
+    .small-btn { padding: 8px 12px; font-size: 14px; }
+    .field { display: flex; gap: 8px; }
+    input { min-width: 0; width: 100%; border: 1px solid var(--panel-border); border-radius: 11px; padding: 11px 12px; color: var(--text); background: var(--input); font: inherit; }
+    .result { margin-top: 12px; padding: 12px; border-radius: 12px; background: rgba(124, 156, 255, .10); color: var(--text); overflow-wrap: anywhere; }
+    .result:empty { display: none; }
+    .status-list { display: grid; gap: 12px; }
+    .status-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; font-size: 14px; }
+    .status-item span:first-child { color: var(--muted); }
+    .status-value { text-align: right; overflow-wrap: anywhere; }
+    .pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; color: var(--accent-2); background: rgba(80, 227, 194, .10); font-size: 12px; font-weight: 750; }
+    footer { margin-top: 22px; text-align: center; color: var(--muted); font-size: 12px; }
+    @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } header { align-items: flex-start; } .tag { text-align: center; } .field { flex-direction: column; } .hero-actions button { flex: 1; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand"><div class="logo" aria-hidden="true">✓</div><span>WEB TEST KIT</span></div>
+      <div class="tag">Halaman uji hosting statis</div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">Website berhasil dimuat</div>
+        <h1>Halo, dunia web! 👋</h1>
+        <p class="intro">Gunakan halaman ini untuk memastikan file HTML, CSS, dan JavaScript berjalan setelah diunggah ke hosting.</p>
+        <div class="hero-actions">
+          <button class="primary" id="testButton" type="button">Jalankan tes tombol</button>
+          <button class="secondary" id="themeButton" type="button">☀️ Ganti tema</button>
+        </div>
+        <div class="result" id="buttonResult" role="status" aria-live="polite"></div>
+      </section>
+
+      <section class="grid" aria-label="Fitur pengujian">
+        <article class="card">
+          <h2>🕒 Jam dan tanggal</h2>
+          <p class="sub">Diperbarui otomatis sesuai waktu perangkat Anda.</p>
+          <div class="clock" id="clock">--:--:--</div>
+          <div class="date" id="date">Memuat tanggal...</div>
+        </article>
+
+        <article class="card">
+          <h2>🔢 Penghitung klik</h2>
+          <p class="sub">Uji interaksi tombol dan penyimpanan lokal browser.</p>
+          <div class="counter-row"><div class="count" id="count">0</div><span class="pill">Klik tercatat</span></div>
+          <div class="controls">
+            <button class="primary small-btn" id="plusButton" type="button">+ Tambah</button>
+            <button class="secondary small-btn" id="resetButton" type="button">Atur ulang</button>
+          </div>
+          <p class="sub" style="margin: 12px 0 0;">Angka disimpan di browser ini, bukan penghitung pengunjung global.</p>
+        </article>
+
+        <article class="card">
+          <h2>💬 Tes input teks</h2>
+          <p class="sub">Masukkan nama untuk menguji formulir sederhana.</p>
+          <form id="greetingForm">
+            <div class="field">
+              <input id="nameInput" type="text" maxlength="60" placeholder="Ketik nama Anda..." autocomplete="name" aria-label="Nama Anda">
+              <button class="primary" type="submit">Kirim</button>
+            </div>
+          </form>
+          <div class="result" id="greetingResult" role="status" aria-live="polite"></div>
+        </article>
+
+        <article class="card">
+          <h2>🧪 Informasi lingkungan</h2>
+          <p class="sub">Informasi dasar dari browser yang membuka halaman ini.</p>
+          <div class="status-list">
+            <div class="status-item"><span>Status JavaScript</span><strong class="status-value" id="jsStatus">Aktif</strong></div>
+            <div class="status-item"><span>Koneksi browser</span><strong class="status-value" id="networkStatus">Memeriksa...</strong></div>
+            <div class="status-item"><span>Protokol</span><strong class="status-value" id="protocol">-</strong></div>
+            <div class="status-item"><span>Host</span><strong class="status-value" id="host">-</strong></div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer>WEB TEST KIT · Dibuat dengan HTML, CSS, dan JavaScript murni · Tidak memerlukan database</footer>
+  </div>
+
+  <script>
+    // Tes 1: tombol merespons interaksi.
+    const testButton = document.getElementById('testButton');
+    testButton.addEventListener('click', () => {
+      const result = document.getElementById('buttonResult');
+      result.textContent = 'Berhasil! Tombol, CSS, dan JavaScript halaman ini berjalan.';
+    });
+
+    // Tes 2: ganti tema terang/gelap.
+    document.getElementById('themeButton').addEventListener('click', () => {
+      document.body.classList.toggle('light');
+    });
+
+    // Tes 3: jam dan tanggal real-time.
+    const clockElement = document.getElementById('clock');
+    const dateElement = document.getElementById('date');
+    function updateClock() {
+      const now = new Date();
+      clockElement.textContent = now.toLocaleTimeString('id-ID', { hour12: false });
+      dateElement.textContent = now.toLocaleDateString('id-ID', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      });
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // Tes 4: penghitung klik dengan localStorage.
+    const countElement = document.getElementById('count');
+    let count = 0;
+    try {
+      count = Number.parseInt(localStorage.getItem('webTestClickCount') || '0', 10);
+      if (!Number.isFinite(count) || count < 0) count = 0;
+    } catch (error) {
+      count = 0; // Tetap berfungsi bila localStorage tidak tersedia.
+    }
+    function renderCount() { countElement.textContent = String(count); }
+    function saveCount() {
+      try { localStorage.setItem('webTestClickCount', String(count)); } catch (error) { /* Penyimpanan opsional. */ }
+      renderCount();
+    }
+    renderCount();
+    document.getElementById('plusButton').addEventListener('click', () => { count += 1; saveCount(); });
+    document.getElementById('resetButton').addEventListener('click', () => { count = 0; saveCount(); });
+
+    // Tes 5: formulir dan input pengguna.
+    document.getElementById('greetingForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = document.getElementById('nameInput').value.trim();
+      const output = document.getElementById('greetingResult');
+      output.textContent = name ? `Halo, ${name}! Formulir berhasil dijalankan.` : 'Silakan masukkan nama terlebih dahulu.';
+    });
+
+    // Tes 6: informasi dasar halaman dan status jaringan browser.
+    document.getElementById('protocol').textContent = window.location.protocol;
+    document.getElementById('host').textContent = window.location.host || '(dibuka sebagai file lokal)';
+    function updateNetworkStatus() {
+      const online = navigator.onLine;
+      const target = document.getElementById('networkStatus');
+      target.textContent = online ? 'Online' : 'Offline';
+      target.style.color = online ? 'var(--accent-2)' : '#ff8f8f';
+    }
+    window.addEventListener('online', updateNetworkStatus);
+    window.addEventListener('offline', updateNetworkStatus);
+    updateNetworkStatus();
+  </script>
+</body>
+</html>
